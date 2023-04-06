@@ -124,9 +124,14 @@ func HandleOps(
 
 	txn, err = ep.HandleOps(auth, toAbiType(batch), beneficiary)
 	if err != nil {
+		auth.GasPrice = new(big.Int).SetUint64(gas)
+		txn, err = ep.HandleOps(auth, toAbiType(batch), beneficiary)
+		if err == nil {
+			return txn, nil, nil
+		}
 		revert, err := reverts.NewFailedOp(err)
 		if err != nil {
-			return nil, nil, fmt.Errorf("here 2")
+			return nil, nil, fmt.Errorf("%s, %s", err, fmt.Errorf("here 2"))
 			// return nil, nil, err
 		}
 		return nil, revert, nil
