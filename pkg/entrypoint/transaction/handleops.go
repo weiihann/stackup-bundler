@@ -50,49 +50,67 @@ func EstimateHandleOpsGas(
 	if err != nil {
 		return 0, nil, err
 	}
-	auth.GasLimit = math.MaxUint64
+	auth.GasPrice = new(big.Int).SetUint64(math.MaxUint64)
 	auth.NoSend = true
-
 	tx, err := ep.HandleOps(auth, toAbiType(batch), beneficiary)
 	if err != nil {
-		return 0, nil, fmt.Errorf("%s, %s", err, fmt.Errorf("here A"))
+		return 0, nil, fmt.Errorf("%s, %s", err, fmt.Errorf("here AA"))
 	}
 
-	dynamicFeeMsg := ethereum.CallMsg{
-		From:       eoa.Address,
-		To:         tx.To(),
-		Gas:        tx.Gas(),
-		GasPrice:   tx.GasPrice(),
-		GasFeeCap:  tx.GasFeeCap(),
-		GasTipCap:  tx.GasTipCap(),
-		Value:      tx.Value(),
-		Data:       tx.Data(),
-		AccessList: tx.AccessList(),
-	}
-
-	legacyMsg := ethereum.CallMsg{
-		From:    eoa.Address,
-		To:      tx.To(),
-		Gas:     tx.Gas(),
+	legacyFeeMsg := ethereum.CallMsg{
+		From:     eoa.Address,
+		To:       tx.To(),
+		Gas:      tx.Gas(),
 		GasPrice: tx.GasPrice(),
-		Value:  tx.Value(),
-		Data:  tx.Data(),
+		Value:    tx.Value(),
+		Data:     tx.Data(),
 	}
 
-	est, err := eth.EstimateGas(context.Background(), dynamicFeeMsg)
+	est, err := eth.EstimateGas(context.Background(), legacyFeeMsg)
 	if err != nil {
-		est, err = eth.EstimateGas(context.Background(), legacyMsg)
-		if err == nil {
-			return est, nil, nil
-		}
 		revert, err := reverts.NewFailedOp(err)
 		if err != nil {
-			return 0, nil, fmt.Errorf("%s, %s", err, fmt.Errorf("here 1"))
-
-			// return 0, nil, err
+			return 0, nil, fmt.Errorf("%s, %s", err, fmt.Errorf("here 1B"))
 		}
 		return 0, revert, nil
 	}
+	// auth, err := bind.NewKeyedTransactorWithChainID(eoa.PrivateKey, chainID)
+	// if err != nil {
+	// 	return 0, nil, err
+	// }
+	// auth.GasLimit = math.MaxUint64
+	// auth.NoSend = true
+
+	// tx, err := ep.HandleOps(auth, toAbiType(batch), beneficiary)
+	// if err != nil {
+	// 	return 0, nil, fmt.Errorf("%s, %s", err, fmt.Errorf("here A"))
+	// }
+
+	// dynamicFeeMsg := ethereum.CallMsg{
+	// 	From:       eoa.Address,
+	// 	To:         tx.To(),
+	// 	Gas:        tx.Gas(),
+	// 	GasPrice:   tx.GasPrice(),
+	// 	GasFeeCap:  tx.GasFeeCap(),
+	// 	GasTipCap:  tx.GasTipCap(),
+	// 	Value:      tx.Value(),
+	// 	Data:       tx.Data(),
+	// 	AccessList: tx.AccessList(),
+	// }
+
+	// est, err := eth.EstimateGas(context.Background(), dynamicFeeMsg)
+	// if err != nil {
+	// 	if err == nil {
+	// 		return est, nil, nil
+	// 	}
+	// 	revert, err := reverts.NewFailedOp(err)
+	// 	if err != nil {
+	// 		return 0, nil, fmt.Errorf("%s, %s", err, fmt.Errorf("here 1"))
+
+	// 		// return 0, nil, err
+	// 	}
+	// 	return 0, revert, nil
+	// }
 
 	return est, nil, nil
 }
