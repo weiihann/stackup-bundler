@@ -14,7 +14,7 @@ func ValidateFeePerGas(op *userop.UserOperation, gbf GetBaseFeeFunc) error {
 		return err
 	}
 
-	if op.MaxFeePerGas != nil && op.MaxFeePerGas.Cmp(bf) < 0 {
+	if op.MaxFeePerGas.Cmp(bf) < 0 {
 		return fmt.Errorf("maxFeePerGas: must be equal to or greater than current block.basefee")
 	}
 
