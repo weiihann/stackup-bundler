@@ -50,7 +50,7 @@ func EstimateHandleOpsGas(
 	if err != nil {
 		return 0, nil, err
 	}
-	auth.GasPrice = new(big.Int).SetUint64(math.MaxUint64)
+	auth.GasPrice = nil
 	auth.NoSend = true
 	tx, err := ep.HandleOps(auth, toAbiType(batch), beneficiary)
 	if err != nil {
