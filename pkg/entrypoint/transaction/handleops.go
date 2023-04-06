@@ -37,6 +37,9 @@ func EstimateHandleOpsGas(
 	batch []*userop.UserOperation,
 	beneficiary common.Address,
 ) (gas uint64, revert *reverts.FailedOpRevert, err error) {
+
+
+
 	ep, err := entrypoint.NewEntrypoint(entryPoint, eth)
 	if err != nil {
 		return 0, nil, err
@@ -54,7 +57,7 @@ func EstimateHandleOpsGas(
 		return 0, nil, err
 	}
 
-	est, err := eth.EstimateGas(context.Background(), ethereum.CallMsg{
+	dynamicFeeMsg := ethereum.CallMsg{
 		From:       eoa.Address,
 		To:         tx.To(),
 		Gas:        tx.Gas(),
@@ -64,8 +67,23 @@ func EstimateHandleOpsGas(
 		Value:      tx.Value(),
 		Data:       tx.Data(),
 		AccessList: tx.AccessList(),
-	})
+	}
+
+	legacyMsg := ethereum.CallMsg{
+		From:    eoa.Address,
+		To:      tx.To(),
+		Gas:     tx.Gas(),
+		GasPrice: tx.GasPrice(),
+		Value:  tx.Value(),
+		Data:  tx.Data(),
+	}
+
+	est, err := eth.EstimateGas(context.Background(), dynamicFeeMsg)
 	if err != nil {
+		est, err = eth.EstimateGas(context.Background(), legacyMsg)
+		if err == nil {
+			return est, nil, nil
+		}
 		revert, err := reverts.NewFailedOp(err)
 		if err != nil {
 			return 0, nil, err
