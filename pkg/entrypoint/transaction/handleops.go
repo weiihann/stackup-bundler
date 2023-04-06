@@ -87,7 +87,6 @@ func EstimateHandleOpsGas(
 		}
 		revert, err := reverts.NewFailedOp(err)
 		if err != nil {
-			fmt.Println("Here 2")
 			return 0, nil, err
 		}
 		return 0, revert, nil
