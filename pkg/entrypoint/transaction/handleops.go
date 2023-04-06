@@ -87,7 +87,9 @@ func EstimateHandleOpsGas(
 		}
 		revert, err := reverts.NewFailedOp(err)
 		if err != nil {
-			return 0, nil, err
+			return 0, nil, fmt.Errorf("%s, %s", err, fmt.Errorf("here 1"))
+
+			// return 0, nil, err
 		}
 		return 0, revert, nil
 	}
@@ -119,7 +121,7 @@ func HandleOps(
 	if err != nil {
 		return nil, nil, err
 	}
-	auth.GasLimit = gas
+	auth.GasLimit = 0
 	auth.GasTipCap = tip
 
 	txn, err = ep.HandleOps(auth, toAbiType(batch), beneficiary)
