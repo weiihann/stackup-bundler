@@ -121,21 +121,21 @@ func HandleOps(
 	if err != nil {
 		return nil, nil, err
 	}
-	auth.GasLimit = 0
+	auth.GasLimit = gas
 	auth.GasTipCap = tip
 
 	txn, err = ep.HandleOps(auth, toAbiType(batch), beneficiary)
 	if err != nil {
 
-		legacyAuth, err := bind.NewKeyedTransactorWithChainID(eoa.PrivateKey, chainID)
-		if err != nil {
-			return nil, nil, err
-		}
-		legacyAuth.GasPrice = new(big.Int).SetUint64(gas)
-		txn, err = ep.HandleOps(legacyAuth, toAbiType(batch), beneficiary)
-		if err == nil {
-			return txn, nil, nil
-		}
+		// legacyAuth, err := bind.NewKeyedTransactorWithChainID(eoa.PrivateKey, chainID)
+		// if err != nil {
+		// 	return nil, nil, err
+		// }
+		// legacyAuth.GasPrice = new(big.Int).SetUint64(gas)
+		// txn, err = ep.HandleOps(legacyAuth, toAbiType(batch), beneficiary)
+		// if err == nil {
+		// 	return txn, nil, nil
+		// }
 		revert, err := reverts.NewFailedOp(err)
 		if err != nil {
 			return nil, nil, fmt.Errorf("%s, %s", err, fmt.Errorf("here 2"))
