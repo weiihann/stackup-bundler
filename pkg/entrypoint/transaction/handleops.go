@@ -112,10 +112,10 @@ func HandleOps(
 	if err != nil {
 		return nil, nil, err
 	}
-	tip, err := eth.SuggestGasTipCap(context.Background())
-	if err != nil {
-		return nil, nil, err
-	}
+	// tip, err := eth.SuggestGasTipCap(context.Background())
+	// if err != nil {
+	// 	return nil, nil, err
+	// }
 
 	auth, err := bind.NewKeyedTransactorWithChainID(eoa.PrivateKey, chainID)
 	if err != nil {
