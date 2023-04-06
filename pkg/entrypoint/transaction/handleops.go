@@ -124,8 +124,13 @@ func HandleOps(
 
 	txn, err = ep.HandleOps(auth, toAbiType(batch), beneficiary)
 	if err != nil {
-		auth.GasPrice = new(big.Int).SetUint64(gas)
-		txn, err = ep.HandleOps(auth, toAbiType(batch), beneficiary)
+
+		legacyAuth, err := bind.NewKeyedTransactorWithChainID(eoa.PrivateKey, chainID)
+		if err != nil {
+			return nil, nil, err
+		}
+		legacyAuth.GasPrice = new(big.Int).SetUint64(gas)
+		txn, err = ep.HandleOps(legacyAuth, toAbiType(batch), beneficiary)
 		if err == nil {
 			return txn, nil, nil
 		}
