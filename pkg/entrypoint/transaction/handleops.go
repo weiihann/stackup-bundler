@@ -3,7 +3,6 @@ package transaction
 import (
 	bytesPkg "bytes"
 	"context"
-	"math"
 	"math/big"
 	"fmt"
 
