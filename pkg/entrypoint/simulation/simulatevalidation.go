@@ -36,6 +36,7 @@ func SimulateValidation(
 	if simErr != nil {
 		fo, foErr := reverts.NewFailedOp(err)
 		if foErr != nil {
+			fmt.Println("Here 1")
 			return nil, fmt.Errorf("%s, %s", simErr, foErr)
 		}
 		return nil, errors.NewRPCError(errors.REJECTED_BY_EP_OR_ACCOUNT, fo.Reason, fo)
