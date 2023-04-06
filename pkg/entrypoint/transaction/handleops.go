@@ -140,7 +140,7 @@ func HandleOps(
 	}
 	// auth.GasLimit = gas
 	// auth.GasTipCap = tip
-	auth.GasPrice = new(big.Int).SetUint64(gas)
+	auth.GasPrice = nil
 
 	txn, err = ep.HandleOps(auth, toAbiType(batch), beneficiary)
 	if err != nil {
