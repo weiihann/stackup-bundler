@@ -246,7 +246,7 @@ func (r *Relayer) SendUserOperation() modules.BatchHandlerFunc {
 				)
 
 				if err != nil {
-					return err
+					return fmt.Errorf("%s, %s", err.Error(), "here D")
 				} else if revert != nil {
 					ctx.MarkOpIndexForRemoval(revert.OpIndex)
 					txnRev = append(txnRev, revert.Reason)
