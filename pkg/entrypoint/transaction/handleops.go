@@ -126,7 +126,7 @@ func HandleOps(
 	if err != nil {
 		revert, err := reverts.NewFailedOp(err)
 		if err != nil {
-			return nil, nil, fmt.Errorf("%s, %s", err.Error(), fmt.Errorf("here 2"))
+			return nil, nil, fmt.Errorf("here 2")
 			// return nil, nil, err
 		}
 		return nil, revert, nil
