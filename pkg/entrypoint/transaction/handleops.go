@@ -55,7 +55,7 @@ func EstimateHandleOpsGas(
 
 	tx, err := ep.HandleOps(auth, toAbiType(batch), beneficiary)
 	if err != nil {
-		return 0, nil, err
+		return 0, nil, fmt.Errorf("%s, %s", err, fmt.Errorf("here A"))
 	}
 
 	dynamicFeeMsg := ethereum.CallMsg{
