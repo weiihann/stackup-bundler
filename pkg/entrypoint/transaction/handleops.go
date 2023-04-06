@@ -3,6 +3,7 @@ package transaction
 import (
 	bytesPkg "bytes"
 	"context"
+	"fmt"
 	"math"
 	"math/big"
 
@@ -86,6 +87,7 @@ func EstimateHandleOpsGas(
 		}
 		revert, err := reverts.NewFailedOp(err)
 		if err != nil {
+			fmt.Printf("Here")
 			return 0, nil, err
 		}
 		return 0, revert, nil
