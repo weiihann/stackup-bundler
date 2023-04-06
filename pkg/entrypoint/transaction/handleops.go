@@ -169,7 +169,7 @@ func CreateRawHandleOps(
 	auth.NoSend = true
 	tx, err := ep.HandleOps(auth, toAbiType(batch), beneficiary)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("%s, %s", err, fmt.Errorf("here B"))
 	}
 
 	ts := types.Transactions{tx}
