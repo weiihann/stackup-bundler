@@ -5,6 +5,7 @@ import (
 	"context"
 	"math"
 	"math/big"
+	"fmt"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -125,7 +126,8 @@ func HandleOps(
 	if err != nil {
 		revert, err := reverts.NewFailedOp(err)
 		if err != nil {
-			return nil, nil, err
+			return nil, nil, fmt.Errorf("%s, %s", err.Error(), fmt.Errorf("here 2"))
+			// return nil, nil, err
 		}
 		return nil, revert, nil
 	}
